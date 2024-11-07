@@ -1,12 +1,11 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.*;
 
 class TicketValidator {
     private int totalTickets;
     private int validTickets;
-    private Map<String, Integer> violationsCount;
+    private final Map<String, Integer> violationsCount;
 
     public TicketValidator() {
         totalTickets = 0;
@@ -17,57 +16,81 @@ class TicketValidator {
     public void validateTickets(List<BusTicket> tickets) {
         for (BusTicket ticket : tickets) {
             totalTickets++;
-            List<String> violations = validateTicket(ticket);
-            if (violations.isEmpty()) {
+            try {
+                validateTicket(ticket);
                 validTickets++;
-            } else {
-                for (String violation : violations) {
-                    violationsCount.put(violation, violationsCount.getOrDefault(violation, 0) + 1);
-                }
-                System.err.println("Ticket validation error: " + violations + " for ticket class: " + ticket.ticketClass);
+            } catch (InvalidTicketException e) {
+                System.err.println(e.getMessage() + " for ticket class: " + ticket.getTicketClass());
             }
         }
     }
 
-    private List<String> validateTicket(BusTicket ticket) {
+    private void validateTicket(BusTicket ticket) throws InvalidTicketException {
         List<String> violations = new ArrayList<>();
 
-        if (!isValidType(ticket.type)) {
+        if (!isValidTicketType(ticket.getTicketType())) {
             violations.add("ticket type");
         }
 
-        if (ticket.price <= 0) {
+        if (!isPriceValid(ticket.getPrice())) {
             violations.add("price");
         }
 
-        if (requiresStartDate(ticket.type) && (ticket.startDate == null || ticket.startDate.isEmpty())) {
+        if (isStartDateRequired(ticket.getTicketType()) && !isStartDateValid(ticket.getStartDate())) {
             violations.add("start date");
         }
 
-        if (ticket.ticketClass == null || ticket.ticketClass.isEmpty()) {
+        if (!isTicketClassValid(ticket.getTicketClass())) {
             violations.add("ticket class");
         }
 
-        return violations;
+        if (!violations.isEmpty()) {
+            registerViolations(violations);
+            throw new InvalidTicketException("Ticket validation error: " + violations);
+        }
     }
 
-    private boolean isValidType(String type) {
-        return "DAY".equals(type) || "WEEK".equals(type) || "YEAR".equals(type);
+    private boolean isValidTicketType(String ticketType) {
+        return "DAY".equals(ticketType) || "WEEK".equals(ticketType) || "MONTH".equals(ticketType) || "YEAR".equals(ticketType);
     }
 
-    private boolean requiresStartDate(String type) {
-        return "DAY".equals(type) || "WEEK".equals(type) || "YEAR".equals(type);
+    private boolean isPriceValid(double price) {
+        return price > 0 && price % 2 == 0;
+    }
+
+    private boolean isStartDateRequired(String ticketType) {
+        return isValidTicketType(ticketType);
+    }
+
+    private boolean isStartDateValid(String startDate) {
+        if (startDate == null || startDate.isEmpty()) {
+            return false;
+        }
+        try {
+            LocalDate date = LocalDate.parse(startDate);
+            return !date.isAfter(LocalDate.now());
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
+    private boolean isTicketClassValid(String ticketClass) {
+        return ticketClass != null && !ticketClass.isEmpty();
+    }
+
+    private void registerViolations(List<String> violations) {
+        for (String violation : violations) {
+            violationsCount.put(violation, violationsCount.getOrDefault(violation, 0) + 1);
+        }
     }
 
     public void printSummary() {
-        System.out.println("Total = " + totalTickets);
-        System.out.println("Valid = " + validTickets);
-
-        String mostPopularViolation = violationsCount.entrySet().stream()
+        System.out.println("Total Tickets = " + totalTickets);
+        System.out.println("Valid Tickets = " + validTickets);
+        String mostFrequentViolation = violationsCount.entrySet().stream()
                 .max(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey)
                 .orElse("None");
-
-        System.out.println("Most popular violation = " + mostPopularViolation);
+        System.out.println("Most Frequent Violation = " + mostFrequentViolation);
     }
 }

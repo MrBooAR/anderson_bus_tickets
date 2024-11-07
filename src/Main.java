@@ -1,17 +1,18 @@
-import java.util.*;
+import java.io.IOException;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        List<BusTicket> tickets = Arrays.asList(
-                new BusTicket("Economy","DAY", "2024-11-07", 10),
-                new BusTicket("Business","WEEK", null, 20),
-                new BusTicket("First Class","YEAR", "2024-01-01", 0),
-                new BusTicket("Economy","MONTH", "2024-02-01", 15),
-                new BusTicket("","DAY", "2024-03-01", 30) // Missing ticket class to trigger violation
-        );
+        String filePath = "D:\\anderson_beginners\\anderson_bus_tickets\\src\\ticket_data.json";
+        try {
+            List<BusTicket> tickets = BusTicket.loadTicketsFromFile(filePath);
+            System.out.println("Number of tickets loaded: " + tickets.size());
 
-        TicketValidator validator = new TicketValidator();
-        validator.validateTickets(tickets);
-        validator.printSummary();
+            TicketValidator validator = new TicketValidator();
+            validator.validateTickets(tickets);
+            validator.printSummary();
+        } catch (IOException e) {
+            System.err.println("Error reading tickets from file: " + e.getMessage());
+        }
     }
 }
