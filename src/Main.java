@@ -1,15 +1,17 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.*;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        List<BusTicket> tickets = Arrays.asList(
+                new BusTicket("Economy","DAY", "2024-11-07", 10),
+                new BusTicket("Business","WEEK", null, 20),
+                new BusTicket("First Class","YEAR", "2024-01-01", 0),
+                new BusTicket("Economy","MONTH", "2024-02-01", 15),
+                new BusTicket("","DAY", "2024-03-01", 30) // Missing ticket class to trigger violation
+        );
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+        TicketValidator validator = new TicketValidator();
+        validator.validateTickets(tickets);
+        validator.printSummary();
     }
 }
