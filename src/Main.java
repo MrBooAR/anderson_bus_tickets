@@ -1,9 +1,13 @@
+import Containers.CustomArrayList;
+import ticket.BusTicket;
+import ticket.TicketValidator;
+
 import java.io.IOException;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        String filePath = "D:\\anderson_beginners\\anderson_bus_tickets\\src\\ticket_data.json";
+        String filePath = "D:\\anderson_beginners\\anderson_bus_tickets\\src\\ticket\\ticket_data.json";
         try {
             List<BusTicket> tickets = BusTicket.loadTicketsFromFile(filePath);
             System.out.println("Number of tickets loaded: " + tickets.size());
@@ -14,5 +18,19 @@ public class Main {
         } catch (IOException e) {
             System.err.println("Error reading tickets from file: " + e.getMessage());
         }
+        CustomArrayList<BusTicket> arrayList = new CustomArrayList<>();
+        arrayList.put(new BusTicket("STD", "DAY", "2023-01-01", 10.0));
+        arrayList.put(new BusTicket("CLA", "WEEK", "2023-01-02", 50.0));
+        arrayList.put(new BusTicket("VIP", "MONTH", "2023-01-03", 100.0));
+
+        System.out.println("CustomArrayList:");
+        System.out.println(arrayList);
+
+        arrayList.deletebyindex(1);
+        System.out.println("After deleting index 1:");
+        System.out.println(arrayList);
+
+        System.out.println("Get ticket at index 0:");
+        System.out.println(arrayList.getbyindex(0));
     }
 }

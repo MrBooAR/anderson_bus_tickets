@@ -1,8 +1,10 @@
+package ticket;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
-class TicketValidator {
+public class TicketValidator {
     private int totalTickets;
     private int validTickets;
     private final Map<String, Integer> violationsCount;

@@ -1,10 +1,12 @@
+package ticket;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-class BusTicket {
+public class BusTicket {
     private final String ticketClass;
     private final String ticketType;
     private final String startDate;
@@ -24,7 +26,7 @@ class BusTicket {
 
     @Override
     public String toString() {
-        return "BusTicket{" +
+        return "ticket.BusTicket{" +
                 "ticketClass='" + ticketClass + '\'' +
                 ", ticketType='" + ticketType + '\'' +
                 ", startDate='" + startDate + '\'' +
