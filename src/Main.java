@@ -1,4 +1,5 @@
 import Containers.CustomArrayList;
+import Containers.CustomHashSet;
 import ticket.BusTicket;
 import ticket.TicketValidator;
 
@@ -32,5 +33,16 @@ public class Main {
 
         System.out.println("Get ticket at index 0:");
         System.out.println(arrayList.getbyindex(0));
+
+        // Testing CustomHashSet Iteration
+        CustomHashSet<BusTicket> hashSet = new CustomHashSet<>();
+        hashSet.put(new BusTicket("STD", "DAY", "2023-01-01", 10.0));
+        hashSet.put(new BusTicket("CLA", "WEEK", "2023-01-02", 50.0));
+        hashSet.put(new BusTicket("VIP", "MONTH", "2023-01-03", 100.0));
+
+        System.out.println("CustomHashSet:");
+        for (BusTicket ticket : hashSet) {
+            System.out.println(ticket);
+        }
     }
 }
