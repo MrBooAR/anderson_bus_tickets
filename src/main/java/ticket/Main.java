@@ -1,14 +1,14 @@
-import Containers.CustomArrayList;
-import Containers.CustomHashSet;
-import ticket.BusTicket;
-import ticket.TicketValidator;
+package ticket;
+
+import containers.CustomArrayList;
+import containers.CustomHashSet;
 
 import java.io.IOException;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        String filePath = "D:\\anderson_beginners\\anderson_bus_tickets\\src\\ticket\\ticket_data.json";
+        String filePath = "D:\\anderson_beginners\\anderson_bus_tickets\\src\\main\\resources\\ticket_data.json";
         try {
             List<BusTicket> tickets = BusTicket.loadTicketsFromFile(filePath);
             System.out.println("Number of tickets loaded: " + tickets.size());

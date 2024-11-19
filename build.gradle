@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.example'  // Укажите свой пакет, если нужно
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()  // Используем Maven Central для зависимостей
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0' // Зависимость для тестирования
+}
+
+tasks.jar {
+    manifest {
+        attributes(
+                'Main-Class': 'ticket.Main' // Укажите полный путь к вашему классу Main
+        )
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    from('src/main/resources') {  // Добавляем ресурсы (например, ticket_data.json)
+        into('.')
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}

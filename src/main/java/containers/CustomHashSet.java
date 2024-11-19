@@ -1,4 +1,4 @@
-package Containers;
+package containers;
 
 import java.util.Iterator;
 import java.util.LinkedList;
