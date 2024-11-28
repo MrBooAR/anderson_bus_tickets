@@ -1,3 +1,7 @@
+package service;
+
+import models.BusTicket;
+import exceptions.InvalidTicketException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.*;
@@ -51,16 +55,13 @@ class TicketValidator {
     }
 
     private boolean isValidTicketType(String ticketType) {
-        return "DAY".equals(ticketType) || "WEEK".equals(ticketType) || "MONTH".equals(ticketType) || "YEAR".equals(ticketType);
+        return TicketType.isValid(ticketType);
     }
 
     private boolean isPriceValid(double price) {
         return price > 0 && price % 2 == 0;
     }
 
-    private boolean isStartDateRequired(String ticketType) {
-        return isValidTicketType(ticketType);
-    }
 
     private boolean isStartDateValid(String startDate) {
         if (startDate == null || startDate.isEmpty()) {
