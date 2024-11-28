@@ -3,11 +3,12 @@ package Containers;
 import java.util.Arrays;
 
 public class CustomArrayList<T> {
+    private static final int DEFAULT_CAPACITY = 10;
     private Object[] elements;
     private int size;
 
     public CustomArrayList() {
-        elements = new Object[10]; // Initial capacity
+        elements = new Object[DEFAULT_CAPACITY]; // Initial capacity
         size = 0;
     }
 
@@ -17,14 +18,14 @@ public class CustomArrayList<T> {
     }
 
     @SuppressWarnings("unchecked")
-    public T getbyindex(int index) {
+    public T getByIndex(int index) { // Renamed to camel case
         if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
         return (T) elements[index];
     }
 
-    public void deletebyindex(int index) {
+    public void deleteByIndex(int index) { // Renamed to camel case
         if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
@@ -47,4 +48,3 @@ public class CustomArrayList<T> {
         return Arrays.toString(Arrays.copyOf(elements, size));
     }
 }
-
